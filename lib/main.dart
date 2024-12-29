@@ -8,11 +8,14 @@ import 'presentation/providers/theme_provider.dart';
 import 'presentation/providers/language_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/router/app_router.dart';
+import 'core/di/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  final settings = SettingsController();
+  await setupServiceLocator();
+  
+  final settings = getIt<SettingsController>();
   await settings.loadSettings();
   
   runApp(MyApp(settings: settings));
