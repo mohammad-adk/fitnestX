@@ -1,0 +1,39 @@
+{
+    "@@locale": "en",
+    "appTitle": "Fitnest",
+    "@appTitle": {
+        "description": "The title of the application"
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Title for the settings screen"
+    },
+    "language": "Language",
+    "@language": {
+        "description": "Label for language selection"
+    },
+    "theme": "Theme",
+    "@theme": {
+        "description": "Label for theme selection"
+    },
+    "system": "System",
+    "@system": {
+        "description": "System theme option"
+    },
+    "light": "Light",
+    "@light": {
+        "description": "Light theme option"
+    },
+    "dark": "Dark",
+    "@dark": {
+        "description": "Dark theme option"
+    },
+    "english": "English",
+    "@english": {
+        "description": "English language option"
+    },
+    "persian": "Persian",
+    "@persian": {
+        "description": "Persian language option"
+    }
+} 

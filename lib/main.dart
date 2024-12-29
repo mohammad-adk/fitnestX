@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'core/controllers/settings_controller.dart';
 import 'presentation/providers/theme_provider.dart';
 import 'presentation/providers/language_provider.dart';
-import 'core/localization/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/router/app_router.dart';
 
@@ -44,13 +44,12 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.darkTheme,
             themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             locale: Locale(languageProvider.currentLanguage),
-            supportedLocales: const [
-              Locale('en'),
-              Locale('fa'),
-            ],
-            localizationsDelegates: [
-              _AppLocalizationsDelegate(),
-              ...GlobalMaterialLocalizations.delegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
             ],
             routerConfig: AppRouter.router,
           );
@@ -58,17 +57,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
-
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
-  @override
-  bool isSupported(Locale locale) => ['en', 'fa'].contains(locale.languageCode);
-
-  @override
-  Future<AppLocalizations> load(Locale locale) async {
-    return AppLocalizations(locale);
-  }
-
-  @override
-  bool shouldReload(LocalizationsDelegate<AppLocalizations> old) => false;
 }
