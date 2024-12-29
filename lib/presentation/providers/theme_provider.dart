@@ -1,32 +1,29 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:fitnest/domain/repositories/theme_repository.dart';
 import 'package:fitnest/core/di/service_locator.dart';
 
-final themeProvider = StateNotifierProvider<ThemeNotifier, bool>((ref) {
-  return ThemeNotifier(getIt<ThemeRepository>());
-});
+part 'theme_provider.g.dart';
 
-class ThemeNotifier extends StateNotifier<bool> {
-  final ThemeRepository _themeRepository;
+@Riverpod(keepAlive: true)
+class Theme extends _$Theme {
+  late final ThemeRepository _repository;
 
-  ThemeNotifier(this._themeRepository) : super(false) {
-    loadTheme();
-  }
-
-  @visibleForTesting
-  Future<void> loadTheme() async {
-    state = await _themeRepository.isDarkMode();
+  @override
+  Future<bool> build() async {
+    _repository = getIt<ThemeRepository>();
+    return _repository.isDarkMode();
   }
 
   Future<void> toggleTheme() async {
-    await _themeRepository.setDarkMode(!state);
-    state = !state;
+    final currentState = state.valueOrNull ?? false;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await _repository.setDarkMode(!currentState);
+      return !currentState;
+    });
   }
 
-  void setInitialTheme(bool isDark) {
-    state = isDark;
+  Future<void> setInitialTheme(bool isDark) async {
+    state = AsyncValue.data(isDark);
   }
-
-  bool get isDarkMode => state;
 } 

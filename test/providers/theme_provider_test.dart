@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fitnest/presentation/providers/theme_provider.dart';
+import 'package:fitnest/core/di/service_locator.dart';
+import 'package:fitnest/domain/repositories/theme_repository.dart';
 import '../mocks/mock_theme_repository.dart';
 
 void main() {
@@ -9,39 +11,47 @@ void main() {
 
   setUp(() {
     mockRepository = MockThemeRepository();
-    container = ProviderContainer(
-      overrides: [
-        themeProvider.overrideWith((ref) => ThemeNotifier(mockRepository)),
-      ],
-    );
+    getIt.registerSingleton<ThemeRepository>(mockRepository);
+    container = ProviderContainer();
   });
 
   tearDown(() {
     container.dispose();
+    getIt.reset();
   });
 
-  test('initial state should be false', () {
-    expect(container.read(themeProvider), false);
-  });
-
-  test('should load theme from repository', () async {
+  test('initial state should load from repository', () async {
     mockRepository.setMockDarkMode(true);
-    final notifier = container.read(themeProvider.notifier);
-    await notifier.loadTheme();
-    expect(container.read(themeProvider), true);
+    final initialState = container.read(themeProvider);
+    expect(initialState.isLoading, true);
+
+    await container.read(themeProvider.future);
+    final loadedState = container.read(themeProvider);
+    expect(loadedState.value, true);
   });
 
   test('should toggle theme', () async {
-    final notifier = container.read(themeProvider.notifier);
-    final initialState = container.read(themeProvider);
-    await notifier.toggleTheme();
-    expect(container.read(themeProvider), !initialState);
-    expect(await mockRepository.isDarkMode(), !initialState);
+    mockRepository.setMockDarkMode(false);
+    await container.read(themeProvider.future); // Wait for initial load
+
+    await container.read(themeProvider.notifier).toggleTheme();
+    final newState = container.read(themeProvider);
+    expect(newState.value, true);
+    expect(await mockRepository.isDarkMode(), true);
   });
 
-  test('should set initial theme', () {
-    final notifier = container.read(themeProvider.notifier);
-    notifier.setInitialTheme(true);
-    expect(container.read(themeProvider), true);
+  test('should handle error when toggling theme', () async {
+    await container.read(themeProvider.future); // Wait for initial load
+    mockRepository.throwError = true;
+
+    await container.read(themeProvider.notifier).toggleTheme();
+    final errorState = container.read(themeProvider);
+    expect(errorState.hasError, true);
+  });
+
+  test('should set initial theme', () async {
+    await container.read(themeProvider.notifier).setInitialTheme(true);
+    final state = container.read(themeProvider);
+    expect(state.value, true);
   });
 } 

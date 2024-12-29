@@ -1,32 +1,28 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/foundation.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:fitnest/domain/repositories/language_repository.dart';
 import 'package:fitnest/core/di/service_locator.dart';
 
-final languageProvider = StateNotifierProvider<LanguageNotifier, String>((ref) {
-  return LanguageNotifier(getIt<LanguageRepository>());
-});
+part 'language_provider.g.dart';
 
-class LanguageNotifier extends StateNotifier<String> {
-  final LanguageRepository _languageRepository;
+@Riverpod(keepAlive: true)
+class Language extends _$Language {
+  late final LanguageRepository _repository;
 
-  LanguageNotifier(this._languageRepository) : super('en') {
-    loadLanguage();
-  }
-
-  @visibleForTesting
-  Future<void> loadLanguage() async {
-    state = await _languageRepository.getLanguage();
+  @override
+  Future<String> build() async {
+    _repository = getIt<LanguageRepository>();
+    return _repository.getLanguage();
   }
 
   Future<void> setLanguage(String languageCode) async {
-    await _languageRepository.setLanguage(languageCode);
-    state = languageCode;
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await _repository.setLanguage(languageCode);
+      return languageCode;
+    });
   }
 
-  void setInitialLanguage(String language) {
-    state = language;
+  Future<void> setInitialLanguage(String language) async {
+    state = AsyncValue.data(language);
   }
-
-  String get currentLanguage => state;
 } 

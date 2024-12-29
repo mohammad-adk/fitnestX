@@ -20,15 +20,23 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDarkMode = ref.watch(themeProvider);
-    final currentLanguage = ref.watch(languageProvider);
+    final themeState = ref.watch(themeProvider);
+    final languageState = ref.watch(languageProvider);
 
     return MaterialApp.router(
       title: AppConstants.appName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      locale: Locale(currentLanguage),
+      themeMode: themeState.when(
+        loading: () => ThemeMode.system,
+        error: (_, __) => ThemeMode.system,
+        data: (isDark) => isDark ? ThemeMode.dark : ThemeMode.light,
+      ),
+      locale: languageState.when(
+        loading: () => const Locale('en'),
+        error: (_, __) => const Locale('en'),
+        data: (lang) => Locale(lang),
+      ),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: const [
         AppLocalizations.delegate,
