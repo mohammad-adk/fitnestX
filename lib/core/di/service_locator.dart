@@ -22,5 +22,8 @@ Future<void> setupServiceLocator() async {
   );
 
   // Controllers
-  getIt.registerSingleton<SettingsController>(SettingsController());
-} 
+  getIt.registerSingleton<SettingsController>(SettingsController(
+    getIt<ThemeRepository>(),
+    getIt<LanguageRepository>(),
+  ));
+}

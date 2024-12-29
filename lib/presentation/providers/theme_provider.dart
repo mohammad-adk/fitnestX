@@ -1,29 +1,32 @@
-import 'package:flutter/material.dart';
-import '../../domain/repositories/theme_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fitnest/domain/repositories/theme_repository.dart';
+import 'package:fitnest/core/di/service_locator.dart';
 
-class ThemeProvider extends ChangeNotifier {
+final themeProvider = StateNotifierProvider<ThemeNotifier, bool>((ref) {
+  return ThemeNotifier(getIt<ThemeRepository>());
+});
+
+class ThemeNotifier extends StateNotifier<bool> {
   final ThemeRepository _themeRepository;
-  bool _isDarkMode = false;
 
-  ThemeProvider(this._themeRepository) {
-    _loadTheme();
+  ThemeNotifier(this._themeRepository) : super(false) {
+    loadTheme();
   }
 
-  bool get isDarkMode => _isDarkMode;
-
-  Future<void> _loadTheme() async {
-    _isDarkMode = await _themeRepository.isDarkMode();
-    notifyListeners();
+  @visibleForTesting
+  Future<void> loadTheme() async {
+    state = await _themeRepository.isDarkMode();
   }
 
   Future<void> toggleTheme() async {
-    _isDarkMode = !_isDarkMode;
-    await _themeRepository.setDarkMode(_isDarkMode);
-    notifyListeners();
+    await _themeRepository.setDarkMode(!state);
+    state = !state;
   }
 
   void setInitialTheme(bool isDark) {
-    _isDarkMode = isDark;
-    notifyListeners();
+    state = isDark;
   }
+
+  bool get isDarkMode => state;
 } 

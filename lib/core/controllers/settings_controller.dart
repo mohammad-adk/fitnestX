@@ -1,23 +1,50 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/repositories/theme_repository.dart';
 import '../../domain/repositories/language_repository.dart';
 import '../di/service_locator.dart';
+import 'settings_state.dart';
 
-class SettingsController {
+final settingsControllerProvider = StateNotifierProvider<SettingsController, SettingsState>((ref) {
+  return SettingsController(
+    getIt<ThemeRepository>(),
+    getIt<LanguageRepository>(),
+  );
+});
+
+class SettingsController extends StateNotifier<SettingsState> {
   final ThemeRepository _themeRepository;
   final LanguageRepository _languageRepository;
-  
-  bool isDarkMode = false;
-  String currentLanguage = 'en';
 
-  SettingsController()
-      : _themeRepository = getIt<ThemeRepository>(),
-        _languageRepository = getIt<LanguageRepository>();
-
-  Future<void> loadSettings() async {
-    isDarkMode = await _themeRepository.isDarkMode();
-    currentLanguage = await _languageRepository.getLanguage();
+  SettingsController(this._themeRepository, this._languageRepository)
+      : super(const SettingsState()) {
+    loadSettings();
   }
 
-  ThemeRepository get themeRepository => _themeRepository;
-  LanguageRepository get languageRepository => _languageRepository;
+  Future<void> loadSettings() async {
+    try {
+      state = state.copyWith(isLoading: true, error: null);
+      final isDarkMode = await _themeRepository.isDarkMode();
+      final currentLanguage = await _languageRepository.getLanguage();
+      state = state.copyWith(
+        isDarkMode: isDarkMode,
+        currentLanguage: currentLanguage,
+        isLoading: false,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Failed to load settings: $e',
+      );
+    }
+  }
+
+  // Settings-specific operations only
+  bool get isLoading => state.isLoading;
+  String? get error => state.error;
+  
+  void clearError() {
+    if (state.error != null) {
+      state = state.copyWith(error: null);
+    }
+  }
 } 

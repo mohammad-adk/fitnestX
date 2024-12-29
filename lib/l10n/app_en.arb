@@ -16,17 +16,9 @@
     "@theme": {
         "description": "Label for theme selection"
     },
-    "system": "System",
-    "@system": {
-        "description": "System theme option"
-    },
-    "light": "Light",
-    "@light": {
-        "description": "Light theme option"
-    },
-    "dark": "Dark",
-    "@dark": {
-        "description": "Dark theme option"
+    "darkMode": "Dark Mode",
+    "@darkMode": {
+        "description": "Label for dark mode toggle"
     },
     "english": "English",
     "@english": {
@@ -35,5 +27,13 @@
     "persian": "Persian",
     "@persian": {
         "description": "Persian language option"
+    },
+    "hello": "Hello",
+    "@hello": {
+        "description": "Hello message"
+    },
+    "homeTitle": "Home",
+    "@homeTitle": {
+        "description": "Home title"
     }
 } 

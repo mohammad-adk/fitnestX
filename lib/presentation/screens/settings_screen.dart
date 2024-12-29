@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/theme_provider.dart';
-import '../providers/language_provider.dart';
-import '../widgets/app_dropdown.dart';
-import '../../core/localization/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fitnest/presentation/providers/theme_provider.dart';
+import 'package:fitnest/presentation/providers/language_provider.dart';
+import 'package:fitnest/presentation/widgets/app_dropdown.dart';
+import 'package:fitnest/core/localization/app_localizations.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = ref.watch(themeProvider);
+    final currentLanguage = ref.watch(languageProvider);
     
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.settings),
+        title: Text(context.l10n.settings),
       ),
       body: ListView(
         children: [
           const SizedBox(height: 16),
           ListTile(
-            title: Text(localizations.darkMode),
+            title: Text(context.l10n.darkMode),
             trailing: Switch(
-              value: context.watch<ThemeProvider>().isDarkMode,
-              onChanged: (value) {
-                context.read<ThemeProvider>().toggleTheme();
-              },
+              value: isDarkMode,
+              onChanged: (_) => ref.read(themeProvider.notifier).toggleTheme(),
             ),
           ),
           ListTile(
-            title: Text(localizations.language),
+            title: Text(context.l10n.language),
             trailing: SizedBox(
               width: 140,
               child: AppDropdown<String>(
-                value: context.watch<LanguageProvider>().currentLanguage,
+                value: currentLanguage,
                 items: [
-                  AppDropdownItem(value: 'en', label: localizations.english),
-                  AppDropdownItem(value: 'fa', label: localizations.persian),
+                  AppDropdownItem(value: 'en', label: context.l10n.english),
+                  AppDropdownItem(value: 'fa', label: context.l10n.persian),
                 ],
                 onChanged: (value) {
                   if (value != null) {
-                    context.read<LanguageProvider>().setLanguage(value);
+                    ref.read(languageProvider.notifier).setLanguage(value);
                   }
                 },
                 label: '',

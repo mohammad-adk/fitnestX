@@ -4,9 +4,9 @@
     "settings": "تنظیمات",
     "language": "زبان",
     "theme": "تم",
-    "system": "سیستم",
-    "light": "روشن",
-    "dark": "تاریک",
+    "darkMode": "حالت تاریک",
     "english": "انگلیسی",
-    "persian": "فارسی"
+    "persian": "فارسی",
+    "hello": "سلام",
+    "homeTitle": "خانه"
 } 

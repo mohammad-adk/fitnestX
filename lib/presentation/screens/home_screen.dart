@@ -1,19 +1,19 @@
+import 'package:fitnest/presentation/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/theme_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/router/app_router.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = context.l10n;
     
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.hello),
+        title: Text(localizations.appTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                context.read<ThemeProvider>().toggleTheme();
+                ref.read(themeProvider.notifier).toggleTheme();
               },
               child: Text(localizations.theme),
             ),

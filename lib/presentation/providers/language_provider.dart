@@ -1,29 +1,32 @@
-import 'package:flutter/material.dart';
-import '../../domain/repositories/language_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fitnest/domain/repositories/language_repository.dart';
+import 'package:fitnest/core/di/service_locator.dart';
 
-class LanguageProvider extends ChangeNotifier {
+final languageProvider = StateNotifierProvider<LanguageNotifier, String>((ref) {
+  return LanguageNotifier(getIt<LanguageRepository>());
+});
+
+class LanguageNotifier extends StateNotifier<String> {
   final LanguageRepository _languageRepository;
-  String _currentLanguage = 'en';
 
-  LanguageProvider(this._languageRepository) {
-    _loadLanguage();
+  LanguageNotifier(this._languageRepository) : super('en') {
+    loadLanguage();
   }
 
-  String get currentLanguage => _currentLanguage;
-
-  Future<void> _loadLanguage() async {
-    _currentLanguage = await _languageRepository.getLanguage();
-    notifyListeners();
+  @visibleForTesting
+  Future<void> loadLanguage() async {
+    state = await _languageRepository.getLanguage();
   }
 
   Future<void> setLanguage(String languageCode) async {
-    _currentLanguage = languageCode;
     await _languageRepository.setLanguage(languageCode);
-    notifyListeners();
+    state = languageCode;
   }
 
   void setInitialLanguage(String language) {
-    _currentLanguage = language;
-    notifyListeners();
+    state = language;
   }
+
+  String get currentLanguage => state;
 } 
