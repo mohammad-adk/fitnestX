@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_constants.dart';
-import '../../domain/repositories/theme_repository.dart';
+import 'package:fitnest/core/constants/app_constants.dart';
+import 'package:fitnest/domain/repositories/theme_repository.dart';
 
 class ThemeRepositoryImpl implements ThemeRepository {
   final SharedPreferences _prefs;

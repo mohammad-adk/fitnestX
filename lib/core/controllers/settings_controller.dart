@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/repositories/theme_repository.dart';
-import '../../domain/repositories/language_repository.dart';
-import '../di/service_locator.dart';
-import 'settings_state.dart';
+import 'package:fitnest/domain/repositories/theme_repository.dart';
+import 'package:fitnest/domain/repositories/language_repository.dart';
+import 'package:fitnest/core/di/service_locator.dart';
+import 'package:fitnest/core/controllers/settings_state.dart';
 
 final settingsControllerProvider = StateNotifierProvider<SettingsController, SettingsState>((ref) {
   return SettingsController(

@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/constants/app_constants.dart';
-import '../../domain/repositories/language_repository.dart';
+import 'package:fitnest/core/constants/app_constants.dart';
+import 'package:fitnest/domain/repositories/language_repository.dart';
 
 class LanguageRepositoryImpl implements LanguageRepository {
   final SharedPreferences _prefs;

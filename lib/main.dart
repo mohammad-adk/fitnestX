@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fitnest/core/constants/app_constants.dart';
-import 'package:fitnest/core/theme/app_theme.dart';
+import 'package:fitnest/config/theme/app_theme.dart';
 import 'package:fitnest/presentation/providers/theme_provider.dart';
 import 'package:fitnest/presentation/providers/language_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fitnest/core/router/app_router.dart';
+import 'package:fitnest/config/router/app_router.dart';
 import 'package:fitnest/core/di/service_locator.dart';
+import 'package:fitnest/config/localization/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

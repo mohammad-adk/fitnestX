@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../domain/repositories/theme_repository.dart';
-import '../../domain/repositories/language_repository.dart';
-import '../../data/repositories/theme_repository_impl.dart';
-import '../../data/repositories/language_repository_impl.dart';
-import '../controllers/settings_controller.dart';
+import 'package:fitnest/domain/repositories/theme_repository.dart';
+import 'package:fitnest/domain/repositories/language_repository.dart';
+import 'package:fitnest/data/repositories/theme_repository_impl.dart';
+import 'package:fitnest/data/repositories/language_repository_impl.dart';
+import 'package:fitnest/core/controllers/settings_controller.dart';
 
 final getIt = GetIt.instance;
 
