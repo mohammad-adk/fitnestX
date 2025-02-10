@@ -12,11 +12,14 @@ if (flutterRoot == null) {
 }
 
 apply plugin: 'com.android.application'
+// START: FlutterFire Configuration
+apply plugin: 'com.google.gms.google-services'
+// END: FlutterFire Configuration
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.example.fitnest"
+    namespace "dev.adk.fitnest"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -30,7 +33,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.fitnest"
+        applicationId "dev.adk.fitnest"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutter.versionCode
