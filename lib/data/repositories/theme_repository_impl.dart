@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fitnest/core/constants/app_constants.dart';
+import 'package:fitnest/core/constants/storage_keys.dart';
 import 'package:fitnest/domain/repositories/theme_repository.dart';
 
 class ThemeRepositoryImpl implements ThemeRepository {
@@ -9,11 +9,11 @@ class ThemeRepositoryImpl implements ThemeRepository {
 
   @override
   Future<bool> isDarkMode() async {
-    return _prefs.getBool(AppConstants.themeKey) ?? false;
+    return _prefs.getBool(StorageKeys.theme) ?? false;
   }
 
   @override
   Future<void> setDarkMode(bool isDark) async {
-    await _prefs.setBool(AppConstants.themeKey, isDark);
+    await _prefs.setBool(StorageKeys.theme, isDark);
   }
 } 
