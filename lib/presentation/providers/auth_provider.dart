@@ -1,11 +1,5 @@
 import 'package:fitnest/domain/entities/user_entity.dart';
-import 'package:fitnest/domain/usecases/get_auth_state_changes_usecase.dart';
-import 'package:fitnest/domain/usecases/get_current_user_usecase.dart';
-import 'package:fitnest/domain/usecases/is_signed_in_usecase.dart';
-import 'package:fitnest/domain/usecases/reset_password_usecase.dart';
-import 'package:fitnest/domain/usecases/sign_in_usecase.dart';
-import 'package:fitnest/domain/usecases/sign_out_usecase.dart';
-import 'package:fitnest/domain/usecases/sign_up_usecase.dart';
+import 'package:fitnest/domain/usecases/auth/auth_usecases.dart';
 import 'package:fitnest/domain/repositories/auth_repository.dart';
 import 'package:fitnest/core/di/service_locator.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
