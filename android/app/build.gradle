@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         applicationId "dev.adk.fitnest"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutter.versionCode
         versionName flutter.versionName

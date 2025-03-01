@@ -5,6 +5,10 @@ import 'package:fitnest/domain/repositories/language_repository.dart';
 import 'package:fitnest/data/repositories/theme_repository_impl.dart';
 import 'package:fitnest/data/repositories/language_repository_impl.dart';
 import 'package:fitnest/core/controllers/settings_controller.dart';
+import 'package:fitnest/domain/repositories/auth_repository.dart';
+import 'package:fitnest/data/repositories/auth_repository_impl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,4 +30,16 @@ Future<void> setupServiceLocator() async {
     getIt<ThemeRepository>(),
     getIt<LanguageRepository>(),
   ));
+
+  // Register Firebase services
+  getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  getIt.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  
+  // Register Auth Repository
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(
+      firebaseAuth: getIt<FirebaseAuth>(), 
+      firestore: getIt<FirebaseFirestore>(),
+    ),
+  );
 }
